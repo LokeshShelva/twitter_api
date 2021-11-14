@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"
+        integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
+        crossorigin="anonymous"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+</head>
+
+<body>
+    <button type="button" id="btn" onClick="sendMsg(event)">Press</button>
+    <script>
+        var socket = io();
+
+        function sendMsg(event) {
+            socket.emit('sensor', { "mgg": "hello" })
+        }
+
+        socket.on('sensor', (data) => {
+            console.log(data)
+        })
+
+        function title(orien) {
+            document.getElementById("btn").innerHTML = `${orien[0]}`;
+        }
+
+        if (window.DeviceOrientationEvent) {
+            document.getElementById("btn").innerHTML = "deviceorientation";
+            window.addEventListener("deviceorientation", function (event) {
+                console.log(event)
+                tilt([event.beta, event.gamma]);
+            }, true);
+        } else if (window.DeviceMotionEvent) {
+            document.getElementById("btn").innerHTML = "devicemotion";
+            window.addEventListener('devicemotion', function (event) {
+                console.log(event)
+                tilt([event.acceleration.x * 2, event.acceleration.y * 2]);
+            }, true);
+        } else {
+            // document.getElementById("btn").innerHTML = "MozOrientation";
+            window.addEventListener("MozOrientation", function (orientation) {
+                document.getElementById("btn").innerHTML = `${orientation.x}`;
+                tilt([orientation.x * 50, orientation.y * 50]);
+            }, true);
+        }
+
+
+    </script>
+</body>
+
+</html>
