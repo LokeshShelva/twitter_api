@@ -5,7 +5,7 @@ $(document).ready(function () {
         $(".tweet-item").remove();
         $.ajax({
             type: "GET",
-            url: `http://localhost:8000/api/tweets/${username}`,
+            url: `https://os-socket-server.herokuapp.com/api/tweets/${username}`,
             datatype: "json",
             success: function (res) {
                 console.log(res)
